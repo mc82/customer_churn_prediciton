@@ -10,12 +10,12 @@ logging.basicConfig(
 )
 
 
-def test_import(import_data):
+def test_import():
 	'''
 	test data import - this example is completed for you to assist with the other test functions
 	'''
 	try:
-		df = import_data("./data/bank_data.csv")
+		df = cls.import_data("/Users/mgoetze/repos/customer_churn_prediction/test/artifacts/bank_data.csv")
 		logging.info("Testing import_data: SUCCESS")
 	except FileNotFoundError as err:
 		logging.error("Testing import_eda: The file wasn't found")

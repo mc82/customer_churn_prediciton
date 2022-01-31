@@ -1,9 +1,11 @@
 # library doc string
 
 
+# from msilib.schema import Error
+import pandas as pd
+import os
+
 # import libraries
-
-
 
 
 def import_data(pth):
@@ -15,9 +17,16 @@ def import_data(pth):
     output:
             df: pandas dataframe
     '''	
-    pass
-
-
+    try:
+        df = pd.read_csv(pth)
+    except IOError as io_error:
+        print(f"File not found:{pth}")
+        print(f"Hint: Current path in {os.getcwd()}")
+        raise IOError from io_error
+        
+    return df
+                
+            
 def perform_eda(df):
     '''
     perform eda on df and save figures to images folder
