@@ -1,5 +1,4 @@
 from abc import abstractmethod
-import pandas as pd
 import matplotlib.pyplot as plt
 from os import path
 import os
@@ -18,7 +17,8 @@ class Plot(object):
         pass
 
     def save(self, figure, plot_name: str):
-        figure.figure.savefig(path.join(self.__plot_dir, plot_name))
+        plot_path = path.join(self.__plot_dir, plot_name)
+        figure.figure.savefig(plot_path)
 
     def _init_plot(self):
         plt.figure(figsize=self._figsize)
@@ -30,3 +30,6 @@ class Plot(object):
     def _check_if_dir_exists(self):
         _path = Path(self.__plot_dir)
         return _path.is_dir()
+    
+    def __del__(self):
+        plt.close()
