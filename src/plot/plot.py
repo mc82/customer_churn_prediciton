@@ -13,7 +13,6 @@ class Plot(object):
         self._create_plot_dir_if_not_exists()
         self._init_plot()
 
-
     @abstractmethod
     def create(self, data, plot_file_name: str):
         pass
