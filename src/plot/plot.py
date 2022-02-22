@@ -11,6 +11,8 @@ class Plot(object):
         self.__plot_dir = plot_dir
         self._figsize = figsize
         self._create_plot_dir_if_not_exists()
+        self._init_plot()
+
 
     @abstractmethod
     def create(self, data, plot_file_name: str):
@@ -21,7 +23,7 @@ class Plot(object):
         figure.figure.savefig(plot_path)
 
     def _init_plot(self):
-        plt.figure(figsize=self._figsize)
+        self._plt = plt.figure(figsize=self._figsize)
 
     def _create_plot_dir_if_not_exists(self):
         if not self._check_if_dir_exists():
@@ -30,6 +32,7 @@ class Plot(object):
     def _check_if_dir_exists(self):
         _path = Path(self.__plot_dir)
         return _path.is_dir()
-    
+
     def __del__(self):
+        # avoids plot of multiple figures into one plot
         plt.close()

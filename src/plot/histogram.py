@@ -9,6 +9,5 @@ class Histogram(Plot):
         super().__init__(**kwargs)
 
     def create(self, data: Series, plot_file_name) -> None:
-        self._init_plot()
         ax = data.hist()
         self.save(figure=ax, plot_name=plot_file_name)
