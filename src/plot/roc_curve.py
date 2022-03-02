@@ -1,4 +1,3 @@
-from matplotlib import pyplot as plt
 from sklearn.metrics import plot_roc_curve
 
 from .plot import Plot
