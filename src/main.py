@@ -1,6 +1,6 @@
-from churn_prediction import ChurnPrediction
-from costants import MODEL_DIR
+from churn_prediction import ChurnPredictionFactory
 
 if __name__ == '__main__':
-    churn_prediction = ChurnPrediction(model_dir=MODEL_DIR)
-    churn_prediction.run()
+    churn_prediction_factory = ChurnPredictionFactory()
+    churn_prediction_factory.register_classifier("random_forest")
+    churn_prediction_factory.run()

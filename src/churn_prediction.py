@@ -1,20 +1,24 @@
 from ctypes.wintypes import PFLOAT
 from os import path
+
+from matplotlib.style import available
 from classifier import RandomForest
 import pandas as pd
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 import joblib
+from typing import List
 
 from plot import Histogram, Distplot, Heatmap, Barplot, ModelSummary, RocCurve
 
-from costants import TO_BE_ENCODED_COLUMN_NAMES, X_COLUMNS
+from costants import TO_BE_ENCODED_COLUMN_NAMES, X_COLUMNS, MODEL_DIR
 
 
 class ChurnPrediction():
 
-    def __init__(self, model_dir) -> None:
+    def __init__(self, model_dir, classifier) -> None:
         self._model_dir = model_dir
+        self._classifier = classifier(self._model_dir)
 
     def run(self):
 
@@ -36,27 +40,27 @@ class ChurnPrediction():
 
         self._perform_train_test_split()
 
-        self._fit_predict_random_forest()
+        self._fit_predict()
 
         # scores
-        print('random forest results')
+        print(f'{self._classifier} results')
         print('test results')
-        print(self._y_train_predictions_rf)
-        print(classification_report(self._y_test, self._y_test_predictions_rf))
+        print(self._y_train_predictions)
+        print(classification_report(self._y_test, self._y_test_predictions))
         print('train results')
-        print(classification_report(self._y_train, self._y_train_predictions_rf))
+        print(classification_report(self._y_train, self._y_train_predictions))
 
         roc_curve = RocCurve(figsize=(15, 8))
-        roc_curve.create(estimator=self._random_forest_classifier.best_model,
-                         X=self._X_test, y=self._y_test, plot_name="random_forest_roc.png")
+        roc_curve.create(estimator=self._classifier.best_model,
+                         X=self._X_test, y=self._y_test, plot_name=f"{self._classifier}_roc.png")
 
         # save best model
-        joblib.dump(self._random_forest_classifier.best_model,
-                    './data/models/rfc_model.pkl')
+        joblib.dump(self._classifier.best_model,
+                    f'./data/models/{self._classifier}_model.pkl')
 
-        model_summary_random_forest = ModelSummary(figsize=(6, 6))
-        model_summary_random_forest.create(y_train=self._y_train, y_train_pred=self._y_train_predictions_rf, y_test=self._y_test,
-                                           y_test_pred=self._y_test_predictions_rf, model_name="random_forest", plot_file_name="model_summary_random_forest.png")
+        model_summary = ModelSummary(figsize=(6, 6))
+        model_summary.create(y_train=self._y_train, y_train_pred=self._y_train_predictions, y_test=self._y_test,
+                             y_test_pred=self._y_test_predictions, model_name=str(self._classifier), plot_file_name=f"model_summary_{self._classifier}.png")
 
     def _load_data_frame(self):
         self._df = pd.read_csv(r"./data/bank_data.csv")
@@ -100,25 +104,23 @@ class ChurnPrediction():
             random_state=42
         )
 
-    def _fit_predict_random_forest(self):
-        self._fit_random_forest()
-        self._predict_random_forest()
+    def _fit_predict(self):
+        self._fit()
+        self._predict()
 
-    def _fit_random_forest(self):
-
-        self._random_forest_classifier = RandomForest(self._model_dir)
-        self._random_forest_classifier.fit(
+    def _fit(self):
+        self._classifier.fit(
             X_train=self._X_train,
             y_train=self._y_train
         )
 
-    def _predict_random_forest(self):
+    def _predict(self):
 
-        self._y_train_predictions_rf = self._random_forest_classifier.predict(
+        self._y_train_predictions = self._classifier.predict(
             X=self._X_train
         )
 
-        self._y_test_predictions_rf = self._random_forest_classifier.predict(
+        self._y_test_predictions = self._classifier.predict(
             X=self._X_test
         )
 
@@ -155,3 +157,26 @@ class ChurnPrediction():
             self._df.corr(),
             plot_file_name="corr_plot.png"
         )
+
+
+class ChurnPredictionFactory():
+
+    available_classifier = {"random_forest": RandomForest}
+
+    def __init__(self):
+        self._registered_classifiers: List = []
+
+    def register_classifier(self, name: str):
+        self._registered_classifiers.append(self.available_classifier[name])
+
+    @property
+    def registered_classifiers(self):
+        return self._registered_classifiers
+
+    def run(self):
+        for classifier in self.registered_classifiers:
+            churn_prediction = ChurnPrediction(
+                model_dir=MODEL_DIR, 
+                classifier=classifier
+            )
+            churn_prediction.run()

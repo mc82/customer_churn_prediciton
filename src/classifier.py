@@ -11,6 +11,8 @@ from costants import MODEL_DIR, MODEL_FILE_NAME, MODEL_EXTENSION
 
 class Classifier():
 
+    name = ""
+
     def __init__(self, model_path) -> None:
         self._model = None
         self._model_path = model_path
@@ -37,8 +39,13 @@ class Classifier():
             MODEL_DIR, MODEL_FILE_NAME + MODEL_EXTENSION)
         print(self._model_path)
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class RandomForest(Classifier):
+
+    name = "random_forest"
 
     _param_grid = param_grid = {
         'n_estimators': [200, 500],
@@ -66,3 +73,6 @@ class RandomForest(Classifier):
     @property
     def best_model(self):
         return self._model.best_estimator_
+
+    def __str__(self) -> str:
+        return super().__str__()
