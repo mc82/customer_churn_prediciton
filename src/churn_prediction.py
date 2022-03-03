@@ -19,9 +19,10 @@ class ChurnPrediction():
     def __init__(self, model_dir, classifier) -> None:
         self._model_dir = model_dir
         self._classifier = classifier(self._model_dir)
+        self._plot_file_name_template = str(
+            self._classifier) + "_{plot_name}.png"
 
     def run(self):
-
         self._load_data_frame()
 
         self._print_data_overview()
@@ -59,8 +60,14 @@ class ChurnPrediction():
                     f'./data/models/{self._classifier}_model.pkl')
 
         model_summary = ModelSummary(figsize=(6, 6))
-        model_summary.create(y_train=self._y_train, y_train_pred=self._y_train_predictions, y_test=self._y_test,
-                             y_test_pred=self._y_test_predictions, model_name=str(self._classifier), plot_file_name=f"model_summary_{self._classifier}.png")
+        model_summary.create(y_train=self._y_train,
+                             y_train_pred=self._y_train_predictions,
+                             y_test=self._y_test,
+                             y_test_pred=self._y_test_predictions,
+                             model_name=str(self._classifier),
+                             plot_file_name=self._plot_file_name_template.format(
+                                 plot_name="model_summary")
+                             )
 
     def _load_data_frame(self):
         self._df = pd.read_csv(r"./data/bank_data.csv")
@@ -115,7 +122,6 @@ class ChurnPrediction():
         )
 
     def _predict(self):
-
         self._y_train_predictions = self._classifier.predict(
             X=self._X_train
         )
@@ -128,23 +134,27 @@ class ChurnPrediction():
         histogram = Histogram(figsize=(20, 10))
         histogram.create(
             self._df['Churn'],
-            plot_file_name="hist_churn.png"
+            plot_file_name=self._plot_file_name_template.format(
+                plot_name="hist_churn")
         )
         histogram.create(
             self._df['Customer_Age'],
-            plot_file_name="hist_customer_age.png"
+            plot_file_name=self._plot_file_name_template.format(
+                plot_name="hist_customer_age")
         )
 
         barplot = Barplot(figsize=(20, 10))
         barplot.create(
             self._df.Marital_Status.value_counts('normalize'),
-            plot_file_name="marital_status.png"
+            plot_file_name=self._plot_file_name_template.format(
+                plot_name="bar_marital_status")
         )
 
         distplot = Distplot(figsize=(20, 10))
         distplot.create(
             self._df['Total_Trans_Ct'],
-            plot_file_name="dist_total_trans_ct.png"
+            plot_file_name=self._plot_file_name_template.format(
+                plot_name="dist_total_trans_ct")
         )
 
         heatmap = Heatmap(
@@ -155,7 +165,8 @@ class ChurnPrediction():
         )
         heatmap.create(
             self._df.corr(),
-            plot_file_name="corr_plot.png"
+            plot_file_name=self._plot_file_name_template.format(
+                plot_name="corr")
         )
 
 
@@ -176,7 +187,7 @@ class ChurnPredictionFactory():
     def run(self):
         for classifier in self.registered_classifiers:
             churn_prediction = ChurnPrediction(
-                model_dir=MODEL_DIR, 
+                model_dir=MODEL_DIR,
                 classifier=classifier
             )
             churn_prediction.run()
