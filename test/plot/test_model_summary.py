@@ -30,5 +30,10 @@ def y_test_pred():
 def test_create(y_train, y_train_pred, y_test, y_test_pred, tmpdir):
     model_summary = ModelSummary(plot_dir=tmpdir, figsize=(6, 6))
     model_summary.create(
-        y_train=y_train, y_train_pred=y_train_pred, y_test=y_test, y_test_pred=y_test_pred, plot_file_name="model_summary.png", model_name="my_classifier")
+        y_train=y_train,
+        y_train_pred=y_train_pred,
+        y_test=y_test,
+        y_test_pred=y_test_pred,
+        plot_file_name="model_summary.png",
+        model_name="my_classifier")
     assert len(tmpdir.listdir()) == 1
