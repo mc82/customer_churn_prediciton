@@ -1,17 +1,13 @@
-from ctypes.wintypes import PFLOAT
-from os import path
+from typing import List
 
-from matplotlib.style import available
-from classifier import RandomForest
+import joblib
 import pandas as pd
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
-import joblib
-from typing import List
 
-from plot import Histogram, Distplot, Heatmap, Barplot, ModelSummary, RocCurve
-
-from costants import TO_BE_ENCODED_COLUMN_NAMES, X_COLUMNS, MODEL_DIR
+from classifier import RandomForest
+from costants import MODEL_DIR, TO_BE_ENCODED_COLUMN_NAMES, X_COLUMNS
+from plot import Barplot, Distplot, Heatmap, Histogram, ModelSummary, RocCurve
 
 
 class ChurnPrediction():
