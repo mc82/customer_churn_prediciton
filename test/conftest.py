@@ -27,7 +27,8 @@ def X_test(X_train) -> pd.DataFrame:
 
 @pytest.fixture
 def y_train() -> pd.DataFrame:
-    return pd.DataFrame({"y": np.random.randint(low=0, high=2, size=NUMBER_OF_TEST_SAMPLES)})
+    return pd.DataFrame({"y": np.random.randint(
+        low=0, high=2, size=NUMBER_OF_TEST_SAMPLES)})
 
 
 @pytest.fixture

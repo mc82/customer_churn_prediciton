@@ -24,7 +24,7 @@ def estimator(X, y):
 
 
 @pytest.mark.plot
-def test_create(estimator, X,  tmpdir):
+def test_create(estimator, X, tmpdir):
     shap_plot = ShapPlot(figsize=(15, 8), plot_dir=tmpdir)
     shap_plot.create(estimator=estimator, X=X, plot_name="shap_plot.png")
     assert len(tmpdir.listdir()) == 1

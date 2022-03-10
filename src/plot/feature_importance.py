@@ -9,11 +9,12 @@ class FeatureImportancePlot(Plot):
     def __init__(self, plot_dir="plots", figsize=...) -> None:
         super().__init__(plot_dir, figsize)
 
-    def create(self, feature_names, importances,  plot_name: str):
+    def create(self, feature_names, importances, plot_name: str):
         # Sort feature importances in descending order
         indices = np.argsort(importances)[::-1]
 
-        # Rearrange feature feature_names so they match the sorted feature importances
+        # Rearrange feature feature_names so they match the sorted feature
+        # importances
         feature_names = [feature_names for i in indices]
 
         # Create plot title

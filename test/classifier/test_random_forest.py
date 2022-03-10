@@ -38,4 +38,4 @@ def test_predict(random_forest_trained, X_train):
 
     prediction_result = random_forest_trained.predict(X_train)
 
-    assert type(prediction_result) == expected_type
+    assert isinstance(prediction_result, expected_type)

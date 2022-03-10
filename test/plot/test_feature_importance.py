@@ -38,7 +38,10 @@ def importances(estimator):
 
 @pytest.mark.plot
 def test_create(feature_names, importances, tmpdir):
-    feature_importance_plot = FeatureImportancePlot(plot_dir=tmpdir, figsize=(20, 7))
+    feature_importance_plot = FeatureImportancePlot(
+        plot_dir=tmpdir, figsize=(20, 7))
     feature_importance_plot.create(
-        feature_names=feature_names, importances=importances, plot_name="feature_importance_plot.png")
+        feature_names=feature_names,
+        importances=importances,
+        plot_name="feature_importance_plot.png")
     assert len(tmpdir.listdir()) == 1

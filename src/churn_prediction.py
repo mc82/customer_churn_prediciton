@@ -48,22 +48,26 @@ class ChurnPrediction():
         print(classification_report(self._y_train, self._y_train_predictions))
 
         roc_curve = RocCurve(figsize=(15, 8))
-        roc_curve.create(estimator=self._classifier.best_model,
-                         X=self._X_test, y=self._y_test, plot_name=f"{self._classifier}_roc.png")
+        roc_curve.create(
+            estimator=self._classifier.best_model,
+            X=self._X_test,
+            y=self._y_test,
+            plot_name=f"{self._classifier}_roc.png")
 
         # save best model
         joblib.dump(self._classifier.best_model,
                     f'./data/models/{self._classifier}_model.pkl')
 
         model_summary = ModelSummary(figsize=(6, 6))
-        model_summary.create(y_train=self._y_train,
-                             y_train_pred=self._y_train_predictions,
-                             y_test=self._y_test,
-                             y_test_pred=self._y_test_predictions,
-                             model_name=str(self._classifier),
-                             plot_file_name=self._plot_file_name_template.format(
-                                 plot_name="model_summary")
-                             )
+        model_summary.create(
+            y_train=self._y_train,
+            y_train_pred=self._y_train_predictions,
+            y_test=self._y_test,
+            y_test_pred=self._y_test_predictions,
+            model_name=str(
+                self._classifier),
+            plot_file_name=self._plot_file_name_template.format(
+                plot_name="model_summary"))
 
     def _load_data_frame(self):
         self._df = pd.read_csv(r"./data/bank_data.csv")
@@ -101,11 +105,7 @@ class ChurnPrediction():
 
     def _perform_train_test_split(self):
         self._X_train, self._X_test, self._y_train, self._y_test = train_test_split(
-            self._X,
-            self._y,
-            test_size=0.3,
-            random_state=42
-        )
+            self._X, self._y, test_size=0.3, random_state=42)
 
     def _fit_predict(self):
         self._fit()
