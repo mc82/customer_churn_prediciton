@@ -1,11 +1,18 @@
+"""
+    Implements RandomForest classifier
+"""
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
+import pandas as pd
 import numpy as np
 
 from .classifier import Classifier
 
 
 class RandomForest(Classifier):
+    """
+        Random Forest classifier using GridSearchCV
+    """
 
     name = "random_forest"
 
@@ -16,25 +23,52 @@ class RandomForest(Classifier):
         'criterion': ['gini', 'entropy']
     }
 
-    def __init__(self, model_path) -> None:
+    def __init__(self, model_path: str) -> None:
+        """
+        Initialize the Random Forest classifier
+
+        Args:
+            model_path (str): path of the model to load and save
+        """
         super().__init__(model_path)
         self._classifier = RandomForestClassifier(random_state=42)
-        self._model = None
+        self._model: GridSearchCV
 
-    def fit(self, X_train, y_train):
-        self._run_grid_search(X_train, y_train)
+    def fit(self, X: pd.DataFrame, y: pd.DataFrame) -> None:
+        """
+        Performrs a grid search to fit the model
+        Args:
+            X (pd.DataFrame): dependend variables to fit the model
+            y (pd.DataFrame): independend variables to fit the model
+        """
+        self._run_grid_search(X, y)
 
-    def predict(self, X) -> np.ndarray:
+    def predict(self, X: pd.DataFrame) -> np.ndarray:
+        """
+        Predicts independed values based on dependend variables using best fitted model
+        Args:
+            X (pd.DataFrame): dependend variales
+
+        Returns:
+            np.ndarray: array with the predicted values
+        """
         return self.best_model.predict(X)
 
-    def _run_grid_search(self, X_train, y_train):
+    def _run_grid_search(self, X: pd.DataFrame, y: pd.DataFrame) -> None:
+        """
+        Runs grid search to find best parameter set to fit the model
+        Args:
+            X (pd.DataFrame): dependend variables
+            y (pd.DataFrame): independed variables
+        """
         self._model = GridSearchCV(
             estimator=self._classifier, param_grid=self._param_grid, cv=5)
-        self._model.fit(X_train, y_train)
+        self._model.fit(X, y)
 
     @property
-    def best_model(self):
+    def best_model(self) -> RandomForestClassifier:
+        """
+        Returns:
+            RandomForestClassifier: best model found be grid search
+        """
         return self._model.best_estimator_
-
-    def __str__(self) -> str:
-        return super().__str__()
