@@ -1,4 +1,4 @@
-.PHONY: setup-environment run
+.PHONY: setup-environment run lint
 
 setup-environment:
 	pip3 install --upgrade pip
@@ -10,3 +10,6 @@ setup-environment:
 
 run:
 	python3 -m src.main
+
+lint:
+	find ./src ./test -type f -name "*.py" | xargs pylint
