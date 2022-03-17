@@ -12,5 +12,5 @@ def dist_data():
 @pytest.mark.plot
 def test_create(dist_data, tmpdir):
     distplot = Distplot(plot_dir=tmpdir, figsize=(15, 8))
-    distplot.create(dist_data=dist_data, plot_file_name="distplot.png")
+    distplot.create(data=dist_data, plot_file_name="distplot.png")
     assert len(tmpdir.listdir()) == 1

@@ -28,5 +28,5 @@ def estimator(X, y):
 @pytest.mark.plot
 def test_create(X, y, estimator, tmpdir):
     roc_curve = RocCurve(plot_dir=tmpdir, figsize=(15, 8))
-    roc_curve.create(X=X, y=y, estimator=estimator, plot_name="roc_plot.png")
+    roc_curve.create(X=X, y=y, estimator=estimator, plot_file_name="roc_plot.png")
     assert len(tmpdir.listdir()) == 1

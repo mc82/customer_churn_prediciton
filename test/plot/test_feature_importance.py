@@ -42,6 +42,6 @@ def test_create(feature_names, importances, tmpdir):
         plot_dir=tmpdir, figsize=(20, 7))
     feature_importance_plot.create(
         feature_names=feature_names,
-        importances=importances,
-        plot_name="feature_importance_plot.png")
+        data=importances,
+        plot_file_name="feature_importance_plot.png")
     assert len(tmpdir.listdir()) == 1

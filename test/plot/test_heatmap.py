@@ -20,5 +20,5 @@ def heatmap_data():
 @pytest.mark.plot
 def test_create(heatmap_data, tmpdir):
     heatmap = Heatmap(plot_dir=tmpdir)
-    heatmap.create(heatmap_data=heatmap_data, plot_file_name="heatmap.png")
+    heatmap.create(data=heatmap_data, plot_file_name="heatmap.png")
     assert len(tmpdir.listdir()) == 1

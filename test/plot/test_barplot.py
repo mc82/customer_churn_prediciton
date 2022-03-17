@@ -14,5 +14,5 @@ def barplot_data():
 @pytest.mark.plot
 def test_create(barplot_data, tmpdir):
     barplot = Barplot(plot_dir=tmpdir, figsize=(15, 8))
-    barplot.create(barplot_data=barplot_data, plot_file_name="barplot.png")
+    barplot.create(data=barplot_data, plot_file_name="barplot.png")
     assert len(tmpdir.listdir()) == 1
