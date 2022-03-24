@@ -8,6 +8,7 @@ from sklearn.model_selection import train_test_split
 from classifier import RandomForest, LogisticRegression
 from costants import MODEL_DIR, TO_BE_ENCODED_COLUMN_NAMES, X_COLUMNS
 from plot import Barplot, Distplot, Heatmap, Histogram, ModelSummary, RocCurve
+from logger import logging
 
 
 class ChurnPrediction():
@@ -40,12 +41,12 @@ class ChurnPrediction():
         self._fit_predict()
 
         # scores
-        print(f'{self._classifier} results')
-        print('test results')
-        print(self._y_train_predictions)
-        print(classification_report(self._y_test, self._y_test_predictions))
-        print('train results')
-        print(classification_report(self._y_train, self._y_train_predictions))
+        logging.info(f'{self._classifier} results')
+        logging.info('test results')
+        logging.info(self._y_train_predictions)
+        logging.info(classification_report(self._y_test, self._y_test_predictions))
+        logging.info('train results')
+        logging.info(classification_report(self._y_train, self._y_train_predictions))
 
         roc_curve = RocCurve(figsize=(15, 8))
         roc_curve.create(
@@ -74,10 +75,10 @@ class ChurnPrediction():
         self._df = self._df.sample(frac=0.1)
 
     def _print_data_overview(self):
-        print(self._df.head())
-        print(self._df.shape)
-        print(self._df.isnull().sum())
-        print(self._df.describe())
+        logging.info(self._df.head())
+        logging.info(self._df.shape)
+        logging.info(self._df.isnull().sum())
+        logging.info(self._df.describe())
 
     def _append_churn_column(self):
         self._df['Churn'] = self._df['Attrition_Flag'].apply(
