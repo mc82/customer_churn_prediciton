@@ -2,7 +2,6 @@
 Contains Logistic Regression interface
 """
 from sklearn.linear_model import LogisticRegression as LogisticRegression_
-import pandas as pd
 
 from .classifier import Classifier
 
@@ -12,6 +11,8 @@ class LogisticRegression(Classifier):
     Performs Logistic Regression
     '''
 
+    name = "logistic_regression"
+
     def __init__(self, model_path: str) -> None:
         '''
         Initializes the base classifier
@@ -20,13 +21,7 @@ class LogisticRegression(Classifier):
         '''
         super().__init__(model_path)
         self._model = LogisticRegression_()
-
-    def fit(self, X: pd.DataFrame, y: pd.DataFrame) -> None:
-        """
-        fits a logistic regression model
-
-        Args:
-            X (pandas:DataFrame): independent variables
-            y (pandas:DataFrame): dependent variable
-        """
-        self._model.fit(X=X, y=y)
+        
+    @property
+    def model(self) -> LogisticRegression_:
+        return self._model

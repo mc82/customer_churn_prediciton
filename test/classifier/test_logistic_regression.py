@@ -2,6 +2,7 @@
 """
 import pickle
 from pathlib import Path
+import numpy as np
 
 from pandas import DataFrame
 import pytest
@@ -43,8 +44,8 @@ def logistic_regression_trained(
     model_path = ARTIFACT_MODEL_PATH
     _model_path = Path(model_path)
     if _model_path.is_file():
-        with open(model_path, "rb") as f:
-            logistic_regression._model = pickle.load(f)
+        with open(model_path, "rb") as file:
+            logistic_regression._model = pickle.load(file)
     else:
         logistic_regression.fit(X_train, y_train)
         logistic_regression._model_path = model_path
@@ -59,7 +60,7 @@ def test_fit(
     X_train: DataFrame,
     y_train: DataFrame
 ):
-    """Test fitting the model with reandom data
+    """Test fitting the model with random data
 
     Args:
         logistic_regression (LogisticRegression): _description_
@@ -93,3 +94,18 @@ def test_save(logistic_regression_trained: LogisticRegression, tmpdir) -> None:
     logistic_regression_trained._model_path = tmpdir + "/loistic_regression_model.pkl"
     logistic_regression_trained.save()
     assert len(tmpdir.listdir()) == 1
+
+
+@pytest.mark.classifier
+def test_predict(logistic_regression_trained: LogisticRegression, X_train: DataFrame) -> None:
+    """Test inference of fitted classifier
+
+    Args:
+        random_forest_trained (RandomForest): Fitted classifier
+        X_train (DataFrame): Data set to perform inference on
+    """
+    expected_type = np.ndarray
+
+    prediction_result = logistic_regression_trained.predict(X_train)
+
+    assert isinstance(prediction_result, expected_type)

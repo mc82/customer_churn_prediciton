@@ -5,14 +5,14 @@ import pandas as pd
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 
-from classifier import RandomForest
+from classifier import RandomForest, LogisticRegression
 from costants import MODEL_DIR, TO_BE_ENCODED_COLUMN_NAMES, X_COLUMNS
 from plot import Barplot, Distplot, Heatmap, Histogram, ModelSummary, RocCurve
 
 
 class ChurnPrediction():
 
-    def __init__(self, model_dir, classifier) -> None:
+    def __init__(self, model_dir: str, classifier) -> None:
         self._model_dir = model_dir
         self._classifier = classifier(self._model_dir)
         self._plot_file_name_template = str(
@@ -49,13 +49,13 @@ class ChurnPrediction():
 
         roc_curve = RocCurve(figsize=(15, 8))
         roc_curve.create(
-            estimator=self._classifier.best_model,
+            estimator=self._classifier.model,
             X=self._X_test,
             y=self._y_test,
-            plot_name=f"{self._classifier}_roc.png")
+            plot_file_name=f"{self._classifier}_roc.png")
 
-        # save best model
-        joblib.dump(self._classifier.best_model,
+        # save  model
+        joblib.dump(self._classifier.model,
                     f'./data/models/{self._classifier}_model.pkl')
 
         model_summary = ModelSummary(figsize=(6, 6))
@@ -113,8 +113,8 @@ class ChurnPrediction():
 
     def _fit(self):
         self._classifier.fit(
-            X_train=self._X_train,
-            y_train=self._y_train
+            X=self._X_train,
+            y=self._y_train
         )
 
     def _predict(self):
@@ -166,14 +166,24 @@ class ChurnPrediction():
         )
 
 
-class ChurnPredictionFactory():
+class ChurnPredictionFactory:
+    """Provided interface to run churn prediction with multiple classifiers
+    """
 
-    available_classifier = {"random_forest": RandomForest}
+    available_classifier = {
+        "random_forest": RandomForest,
+        "logistic_regression": LogisticRegression
+    }
 
     def __init__(self):
         self._registered_classifiers: List = []
 
-    def register_classifier(self, name: str):
+    def register_classifier(self, name: str) -> None:
+        """Enables to register multiple classifiers
+
+        Args:
+            name (str): nome of the classifier to register
+        """
         self._registered_classifiers.append(self.available_classifier[name])
 
     @property

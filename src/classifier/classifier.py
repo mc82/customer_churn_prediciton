@@ -3,10 +3,11 @@ Implements abstract base class of classifier t
 o provice a common interface all derived classifiers.
 """
 from abc import ABC
-from abc import abstractmethod
+from typing import Any
 import pickle
 from os import path
 import pandas as pd
+import numpy as np
 
 from costants import MODEL_DIR, MODEL_FILE_NAME, MODEL_EXTENSION
 
@@ -19,20 +20,23 @@ class Classifier(ABC):
     name = ""
 
     def __init__(self, model_path: str) -> None:
-        self._model = None
+        self._model: Any
         self._model_path = model_path
         self._set_model_path()
         self._classifier = None
 
-    @abstractmethod
     def fit(self, X: pd.DataFrame, y: pd.DataFrame):
         """
-        abstract method to fit the classifier
+        Fits the classifier
 
         Args:
             X (pandas.DataFrame): depended variables
             y (pandas.DataFrame): independend variables
         """
+        self._model.fit(X=X, y=y)
+
+    def predict(self, X: pd.DataFrame) -> np.ndarray:
+        return self._model.predict(X)
 
     def save(self) -> None:
         """

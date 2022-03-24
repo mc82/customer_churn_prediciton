@@ -39,34 +39,34 @@ class RandomForest(Classifier):
         Performrs a grid search to fit the model
         Args:
             X (pd.DataFrame): dependend variables to fit the model
-            y (pd.DataFrame): independend variables to fit the model
+            y (pd.DataFrame): independent variables to fit the model
         """
         self._run_grid_search(X, y)
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
         """
-        Predicts independed values based on dependend variables using best fitted model
+        Predicts independent values based on dependend variables using best fitted model
         Args:
             X (pd.DataFrame): dependend variales
 
         Returns:
             np.ndarray: array with the predicted values
         """
-        return self.best_model.predict(X)
+        return self.model.predict(X)
 
     def _run_grid_search(self, X: pd.DataFrame, y: pd.DataFrame) -> None:
         """
         Runs grid search to find best parameter set to fit the model
         Args:
             X (pd.DataFrame): dependend variables
-            y (pd.DataFrame): independed variables
+            y (pd.DataFrame): independent variables
         """
         self._model = GridSearchCV(
             estimator=self._classifier, param_grid=self._param_grid, cv=5)
         self._model.fit(X, y)
 
     @property
-    def best_model(self) -> RandomForestClassifier:
+    def model(self) -> RandomForestClassifier:
         """
         Returns:
             RandomForestClassifier: best model found be grid search
