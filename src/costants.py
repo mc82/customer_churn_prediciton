@@ -1,3 +1,5 @@
+INPUT_DATA_PATH = "./data/bank_data.csv"
+
 MODEL_DIR = "data/model"
 MODEL_FILE_NAME = "model"
 MODEL_EXTENSION = ".pkl"
