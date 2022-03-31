@@ -1,4 +1,5 @@
 """Implements test of barplot module
+__author__ = "Maik Goetze"
 """
 
 import pandas as pd

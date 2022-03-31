@@ -1,5 +1,6 @@
 """
 Implements class to create hist plots.
+__author__ = "Maik Goetze"
 """
 
 from pandas import Series

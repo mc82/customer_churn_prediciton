@@ -1,4 +1,5 @@
 """Implements tests to register classifiers
+__author__ = "Maik Goetze"
 """
 import pytest
 from churn_prediction import ChurnPredictionFactory
@@ -6,7 +7,8 @@ from classifier import RandomForest, LogisticRegression
 
 
 @pytest.mark.factory
-@pytest.mark.parametrize("classifier_name", [("random_forest"), ("logistic_regression")])
+@pytest.mark.parametrize("classifier_name",
+                         [("random_forest"), ("logistic_regression")])
 def test_register_one_classifier(classifier_name: str):
     """Test whether registration of one classifier works
 

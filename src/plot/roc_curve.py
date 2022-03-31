@@ -1,5 +1,6 @@
 """
 Implements class to create roc curves.
+__author__ = "Maik Goetze"
 """
 
 from sklearn.metrics import plot_roc_curve

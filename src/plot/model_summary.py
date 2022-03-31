@@ -1,5 +1,6 @@
 """
 Implements class to summarize model performance.
+__author__ = "Maik Goetze"
 """
 
 from sklearn.metrics import classification_report

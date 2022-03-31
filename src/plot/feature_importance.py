@@ -1,5 +1,6 @@
 """
 Implements class to create plots of feature importance.
+__author__ = "Maik Goetze"
 """
 from typing import List
 import numpy as np

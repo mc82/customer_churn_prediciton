@@ -1,4 +1,5 @@
 """Implements test of model_summary module
+__author__ = "Maik Goetze"
 """
 import pytest
 import numpy as np

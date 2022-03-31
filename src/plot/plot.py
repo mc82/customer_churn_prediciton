@@ -1,5 +1,6 @@
 """
 Provices class of the common interface of all plots.
+__author__ = "Maik Goetze"
 """
 
 import os

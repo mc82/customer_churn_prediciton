@@ -1,6 +1,7 @@
 """
 Implements abstract base class of classifier t
 o provice a common interface all derived classifiers.
+__author__ = "Maik Goetze"
 """
 from abc import ABC
 from typing import Any

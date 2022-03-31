@@ -1,4 +1,7 @@
 
+"""Set up the logging
+__author__ = "Maik Goetze"
+"""
 import logging
 
 

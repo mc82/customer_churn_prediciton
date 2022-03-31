@@ -1,4 +1,5 @@
 """Implements test of logistic_regression module
+__author__ = "Maik Goetze"
 """
 import pickle
 from pathlib import Path

@@ -1,5 +1,7 @@
 '''
 Module provides a class to create bar plots by leveraging a common interface
+__author__ = "Maik Goetze"
+
 '''
 
 from pandas import Series

@@ -1,5 +1,5 @@
-
 """Implements test of shap_plot module
+__author__ = "Maik Goetze"
 """
 import pytest
 from sklearn.ensemble import RandomForestClassifier

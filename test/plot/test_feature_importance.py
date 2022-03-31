@@ -1,4 +1,5 @@
 """Implements test of feature_importance module
+__author__ = "Maik Goetze"
 """
 import random
 import string

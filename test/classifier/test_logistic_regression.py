@@ -1,12 +1,11 @@
 """Implements tests of logistic_regression module
+__author__ = "Maik Goetze"
 """
-import pickle
 from pathlib import Path
 import numpy as np
 
 from pandas import DataFrame
 import pytest
-import os
 
 from classifier import LogisticRegression
 

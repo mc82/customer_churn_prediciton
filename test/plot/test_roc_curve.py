@@ -1,4 +1,5 @@
 """Implements test of roc_curve module
+__author__ = "Maik Goetze"
 """
 import numpy as np
 import pytest

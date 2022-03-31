@@ -1,5 +1,7 @@
 """
 Implements class to create dist plots
+__author__ = "Maik Goetze"
+
 """
 
 from pandas import Series

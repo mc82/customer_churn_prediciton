@@ -1,5 +1,7 @@
 """
 Contains Logistic Regression interface
+__author__ = "Maik Goetze"
+
 """
 from sklearn.linear_model import LogisticRegression as LogisticRegression_
 

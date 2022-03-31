@@ -1,4 +1,5 @@
 """Implements test of histogram module
+__author__ = "Maik Goetze"
 """
 import numpy as np
 import pytest

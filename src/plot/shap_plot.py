@@ -1,5 +1,6 @@
 """
 Implements class to provide plot with shap values.
+__author__ = "Maik Goetze"
 """
 
 from pandas import DataFrame

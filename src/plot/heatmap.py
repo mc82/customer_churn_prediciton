@@ -1,5 +1,6 @@
 """
 Implements class to create heat map plot.
+__author__ = "Maik Goetze"
 """
 import seaborn as sns
 from pandas import Series

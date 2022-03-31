@@ -1,4 +1,5 @@
-"""Implements the script to run the full process
+"""Implements the script to run the full process if churn prediction
+__author__ = "Maik Goetze"
 """
 
 from churn_prediction import ChurnPredictionFactory

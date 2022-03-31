@@ -1,5 +1,7 @@
 """
-    Implements RandomForest classifier
+Implements RandomForest classifier
+__author__ = "Maik Goetze"
+
 """
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV

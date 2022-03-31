@@ -1,3 +1,7 @@
+"""
+__author__ = "Maik Goetze"
+"""
+
 from typing import List
 
 import pandas as pd

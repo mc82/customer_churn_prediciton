@@ -1,4 +1,5 @@
 """Implements test of heatmap module
+__author__ = "Maik Goetze"
 """
 import pytest
 import numpy as np

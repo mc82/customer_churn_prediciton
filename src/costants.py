@@ -1,3 +1,8 @@
+"""This is a configuration file
+__author__ = "Maik Goetze"
+"""
+
+
 INPUT_DATA_PATH = "./data/bank_data.csv"
 
 MODEL_DIR = "output/model"
