@@ -6,3 +6,4 @@ scikit-learn==1.0.2
 seaborn==0.11.2
 shap==0.40.0
 pylint==2.12.2
+pytest-reportlog==0.1.2

@@ -24,4 +24,17 @@ make run
 
 ## Output
 
+<!-- # TODO describe output structure  -->
+
 After executing the process you can find the resulting plots in the [plot]{.plot/} directory.
+
+## Tests
+
+Unit test are implemented of the most important classes/methods. We use **pytest** as a testing framework.
+In order to run the test execute to following command:
+
+```bash
+make test
+```
+
+The progress of the test will be shown in the terminal. However, there is also a log file in **output/test.log** to lookup the test results.

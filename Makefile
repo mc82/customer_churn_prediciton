@@ -1,4 +1,4 @@
-.PHONY: setup-environment run lint apply_autopep
+.PHONY: setup-environment run lint apply_autopep test
 
 setup-environment:
 	pip3 install --upgrade pip
@@ -12,7 +12,7 @@ run:
 	python3 -m src.main
 
 test:
-	pytest
+	pytest --report-log=output/test.log
 
 lint:
 	find ./src ./test -type f -name "*.py" | xargs pylint
