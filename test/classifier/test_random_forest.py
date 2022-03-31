@@ -20,7 +20,7 @@ def random_forest(tmpdir) -> RandomForest:
     Returns:
         RandomForest: Initiated but unfitted estimator
     """
-    return RandomForest(model_path=tmpdir)
+    return RandomForest(model_dir=tmpdir)
 
 
 @pytest.fixture
@@ -40,7 +40,7 @@ def random_forest_trained(
     Returns:
         RandomForest: _description_
     """
-    model_path = "test/artifacts/data/model/model.pkl"
+    model_path = "test/artifacts/data/model/random_forest.pkl"
     _model_path = Path(model_path)
     if _model_path.is_file():
         with open(model_path, "rb") as file_handle:
@@ -71,7 +71,9 @@ def test_fit_and_save(
 
 
 @pytest.mark.classifier
-def test_predict(random_forest_trained: RandomForest, X_train: DataFrame) -> None:
+def test_predict(
+        random_forest_trained: RandomForest,
+        X_train: DataFrame) -> None:
     """Test inference of fitted classifier
 
     Args:

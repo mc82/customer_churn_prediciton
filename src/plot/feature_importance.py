@@ -14,10 +14,14 @@ class FeatureImportancePlot(Plot):
     Provices method the create plots of feature importance.
     """
 
-    def __init__(self, plot_dir="plots", figsize=...) -> None:
+    def __init__(self, plot_dir, figsize=...) -> None:
         super().__init__(plot_dir, figsize)
 
-    def create(self, data: Series, feature_names: List[str],  plot_file_name: str):
+    def create(
+            self,
+            data: Series,
+            feature_names: List[str],
+            plot_file_name: str):
         """
         Creates plot of feature importance and saves it on disk.
 

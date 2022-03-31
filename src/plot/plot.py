@@ -17,7 +17,7 @@ class Plot:
     Implements Interface and some methods to create and save plots.
     """
 
-    def __init__(self, plot_dir="plots", figsize=(20, 30)) -> None:
+    def __init__(self, plot_dir, figsize=(20, 30)) -> None:
         self.__plot_dir = plot_dir
         self._figsize = figsize
         self._create_plot_dir_if_not_exists()

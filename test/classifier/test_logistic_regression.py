@@ -6,10 +6,11 @@ import numpy as np
 
 from pandas import DataFrame
 import pytest
+import os
 
 from classifier import LogisticRegression
 
-ARTIFACT_MODEL_PATH = "test/artifacts/data/model/logistic_regression.pkl"
+ARTIFACT_MODEL_DIR = "test/artifacts/data/model/"
 
 
 @pytest.fixture
@@ -22,7 +23,7 @@ def logistic_regression(tmpdir) -> LogisticRegression:
     Returns:
         LogisticRegression: Initialized estimator
     """
-    return LogisticRegression(model_path=tmpdir)
+    return LogisticRegression(model_dir=tmpdir)
 
 
 @pytest.fixture
@@ -41,14 +42,11 @@ def logistic_regression_trained(
     Returns:
         LogisticRegression: Fitted classifier with random data
     """
-    model_path = ARTIFACT_MODEL_PATH
-    _model_path = Path(model_path)
-    if _model_path.is_file():
-        with open(model_path, "rb") as file:
-            logistic_regression._model = pickle.load(file)
+
+    if Path(logistic_regression._model_path).is_file():
+        logistic_regression.load()
     else:
         logistic_regression.fit(X_train, y_train)
-        logistic_regression._model_path = model_path
         logistic_regression.save()
     return logistic_regression
 
@@ -76,7 +74,7 @@ def test_fit(
 def test_load() -> None:
     """Test loading a pickled model
     """
-    logistic_regression = LogisticRegression(model_path=ARTIFACT_MODEL_PATH)
+    logistic_regression = LogisticRegression(model_dir=ARTIFACT_MODEL_DIR)
     logistic_regression.load()
     assert logistic_regression._model is not None
 
@@ -91,13 +89,14 @@ def test_save(logistic_regression_trained: LogisticRegression, tmpdir) -> None:
         to be ready for saving
         tmpdir :  Tmp directory to save model
     """
-    logistic_regression_trained._model_path = tmpdir + "/loistic_regression_model.pkl"
     logistic_regression_trained.save()
     assert len(tmpdir.listdir()) == 1
 
 
 @pytest.mark.classifier
-def test_predict(logistic_regression_trained: LogisticRegression, X_train: DataFrame) -> None:
+def test_predict(
+        logistic_regression_trained: LogisticRegression,
+        X_train: DataFrame) -> None:
     """Test inference of fitted classifier
 
     Args:

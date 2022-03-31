@@ -9,7 +9,7 @@ from os import path
 import pandas as pd
 import numpy as np
 
-from costants import MODEL_DIR, MODEL_FILE_NAME, MODEL_EXTENSION
+from costants import MODEL_EXTENSION
 
 
 class Classifier(ABC):
@@ -19,10 +19,10 @@ class Classifier(ABC):
 
     name = ""
 
-    def __init__(self, model_path: str) -> None:
+    def __init__(self, model_dir: str) -> None:
         self._model: Any
-        self._model_path = model_path
-        self._set_model_path()
+        self._model_dir = model_dir
+        self._model_path = self._create_model_path()
         self._classifier = None
 
     def fit(self, X: pd.DataFrame, y: pd.DataFrame):
@@ -43,7 +43,6 @@ class Classifier(ABC):
         Save the model as pickle file.
         """
         with open(self._model_path, "wb") as file:
-            print(file)
             pickle.dump(self._model, file)
 
     def load(self) -> None:
@@ -55,13 +54,13 @@ class Classifier(ABC):
             self._model = pickle.load(file)
         print("Model successfully loaded")
 
-    def _set_model_path(self) -> None:
+    def _create_model_path(self) -> str:
         """
-        Sets to model path to load and save the model.
+        Returns the model path to load and save the model.
+        Returns:
+            str: path to load and save the model
         """
-        self._model_path = path.join(
-            MODEL_DIR, MODEL_FILE_NAME + MODEL_EXTENSION)
-        print(self._model_path)
+        return path.join(self._model_dir, self.name + MODEL_EXTENSION)
 
     def __str__(self) -> str:
         """

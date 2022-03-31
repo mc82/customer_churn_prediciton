@@ -1,8 +1,10 @@
 INPUT_DATA_PATH = "./data/bank_data.csv"
 
-MODEL_DIR = "data/model"
+MODEL_DIR = "output/model"
 MODEL_FILE_NAME = "model"
 MODEL_EXTENSION = ".pkl"
+
+PLOT_DIR = "output/plot"
 
 TO_BE_ENCODED_COLUMN_NAMES = [
     "Gender",

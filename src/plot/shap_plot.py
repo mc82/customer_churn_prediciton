@@ -15,7 +15,7 @@ class ShapPlot(Plot):
         Plot (Plot): Base class with common interface
     """
 
-    def __init__(self, plot_dir="plots", figsize=...) -> None:
+    def __init__(self, plot_dir, figsize=...) -> None:
         super().__init__(plot_dir, figsize)
 
     def create(self, estimator, X: DataFrame, plot_file_name: str):

@@ -11,7 +11,7 @@ class Barplot(Plot):
     Creates and saves bar plot based on given input.
     """
 
-    def __init__(self, plot_dir="plots", figsize=...) -> None:
+    def __init__(self, plot_dir, figsize=...) -> None:
         """
         Inits the base class
         Args:

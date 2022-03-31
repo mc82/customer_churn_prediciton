@@ -13,7 +13,7 @@ class Distplot(Plot):
     Provides method the create a dist plot using a common interface.
     """
 
-    def __init__(self, plot_dir="plots", figsize=...) -> None:
+    def __init__(self, plot_dir, figsize=...) -> None:
         super().__init__(plot_dir, figsize)
 
     def create(self, data: Series, plot_file_name: str) -> None:

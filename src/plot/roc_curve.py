@@ -13,10 +13,15 @@ class RocCurve(Plot):
     Implements method to create and save roc curves.
     """
 
-    def __init__(self, plot_dir="plots", figsize=...) -> None:
+    def __init__(self, plot_dir, figsize=...) -> None:
         super().__init__(plot_dir, figsize)
 
-    def create(self, estimator, X: DataFrame, y: Series, plot_file_name: str) -> None:
+    def create(
+            self,
+            estimator,
+            X: DataFrame,
+            y: Series,
+            plot_file_name: str) -> None:
         """Creates roc curve based on estimator and dependent variables
 
         Args:

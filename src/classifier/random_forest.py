@@ -23,14 +23,14 @@ class RandomForest(Classifier):
         'criterion': ['gini', 'entropy']
     }
 
-    def __init__(self, model_path: str) -> None:
+    def __init__(self, model_dir: str) -> None:
         """
         Initialize the Random Forest classifier
 
         Args:
             model_path (str): path of the model to load and save
         """
-        super().__init__(model_path)
+        super().__init__(model_dir)
         self._classifier = RandomForestClassifier(random_state=42)
         self._model: GridSearchCV
 

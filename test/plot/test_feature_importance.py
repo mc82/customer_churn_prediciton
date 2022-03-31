@@ -61,7 +61,10 @@ def estimator(X: np.ndarray, y: np.ndarray) -> RandomForestClassifier:
 
 
 @pytest.mark.plot
-def test_create(feature_names: List[str], estimator: RandomForestClassifier,  tmpdir) -> None:
+def test_create(
+        feature_names: List[str],
+        estimator: RandomForestClassifier,
+        tmpdir) -> None:
     """Test create and save of feature importance plot
     Args:
         feature_names (List[str]): _description_

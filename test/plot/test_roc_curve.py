@@ -46,7 +46,11 @@ def estimator(X: np.ndarray, y: np.ndarray) -> LogisticRegression:
 
 
 @pytest.mark.plot
-def test_create(X: np.ndarray, y: np.ndarray, estimator: LogisticRegression, tmpdir):
+def test_create(
+        X: np.ndarray,
+        y: np.ndarray,
+        estimator: LogisticRegression,
+        tmpdir):
     """Tests create and save of roc curve plot
 
     Args:

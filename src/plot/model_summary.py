@@ -47,8 +47,11 @@ class ModelSummary(Plot):
         plt.text(0.01, 0.6, str(f'{model_name} Test'), {
                  'fontsize': 10}, fontproperties='monospace')
         # approach improved by OP -> monospace!
-        plt.text(0.01, 0.7, str(classification_report(y_train, y_train_pred)), {
-                 'fontsize': 10}, fontproperties='monospace')
+        plt.text(
+            0.01, 0.7, str(
+                classification_report(
+                    y_train, y_train_pred)), {
+                'fontsize': 10}, fontproperties='monospace')
         plt.axis('off')
 
         self.save(plt.gcf(), plot_file_name)
