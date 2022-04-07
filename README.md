@@ -24,9 +24,19 @@ make run
 
 ## Output
 
-<!-- # TODO describe output structure  -->
+The [output]{.output/} directory contains the output of the application and the test logs.
 
-After executing the process you can find the resulting plots in the [plot]{.plot/} directory.
+### Models
+
+The created models can be found in the [output]{.output/} directory. The filename indicates the used classifier.
+
+### Plots
+
+After executing the process you can find the resulting plots in the [output/plot]{./output/plot/} directory.
+
+### Logs
+
+The execution logs can be found in the [output]{.output/} directory.
 
 ## Tests
 

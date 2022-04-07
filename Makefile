@@ -1,4 +1,4 @@
-.PHONY: setup-environment run lint apply_autopep test
+.PHONY: setup-environment run lint autopep test
 
 setup-environment:
 	pip3 install --upgrade pip
@@ -17,5 +17,5 @@ test:
 lint:
 	find ./src ./test -type f -name "*.py" | xargs pylint
 
-apply_autopep:
+autopep:
 	find ./src ./test -type f -name "*.py" | xargs autopep8 --in-place --aggressive --aggressive 
