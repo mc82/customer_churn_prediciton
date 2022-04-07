@@ -9,6 +9,7 @@ import pickle
 from os import path
 import pandas as pd
 import numpy as np
+from pathlib import Path
 
 from costants import MODEL_EXTENSION
 
@@ -20,7 +21,7 @@ class Classifier(ABC):
 
     name = ""
 
-    def __init__(self, model_dir: str) -> None:
+    def __init__(self, model_dir: Path) -> None:
         self._model: Any
         self._model_dir = model_dir
         self._model_path = self._create_model_path()
@@ -32,7 +33,7 @@ class Classifier(ABC):
 
         Args:
             X (pandas.DataFrame): depended variables
-            y (pandas.DataFrame): independend variables
+            y (pandas.DataFrame): independed variables
         """
         self._model.fit(X=X, y=y)
 

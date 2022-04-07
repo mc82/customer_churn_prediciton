@@ -11,6 +11,8 @@ MODEL_EXTENSION = ".pkl"
 
 PLOT_DIR = "output/plot"
 
+LOG_DIR = "output"
+
 TO_BE_ENCODED_COLUMN_NAMES = [
     "Gender",
     "Education_Level",

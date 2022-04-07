@@ -12,15 +12,18 @@ from classifier import LogisticRegression, RandomForest
 from costants import MODEL_DIR, TO_BE_ENCODED_COLUMN_NAMES, X_COLUMNS, INPUT_DATA_PATH, PLOT_DIR
 from logger import logging
 from plot import Barplot, Distplot, Heatmap, Histogram, ModelSummary, RocCurve
+from directory import Directory
+from pathlib import Path
 
 
 class ChurnPrediction():
 
-    def __init__(self, model_dir: str, classifier) -> None:
+    def __init__(self, model_dir: Path, plot_dir: Path, classifier) -> None:
         self._model_dir = model_dir
         self._classifier = classifier(model_dir=self._model_dir)
         self._plot_file_name_template = str(
             self._classifier) + "_{plot_name}.png"
+        self._plot_dir = plot_dir
 
     def run(self):
 
@@ -58,7 +61,7 @@ class ChurnPrediction():
             classification_report_train))
 
         logging.info("Creating ROC curve...")
-        roc_curve = RocCurve(figsize=(15, 8), plot_dir=PLOT_DIR)
+        roc_curve = RocCurve(figsize=(15, 8), plot_dir=self._plot_dir)
         roc_curve.create(
             estimator=self._classifier.model,
             X=self._X_test,
@@ -72,7 +75,7 @@ class ChurnPrediction():
         logging.info("Saving of model done")
 
         logging.info("Creating model summary ...")
-        model_summary = ModelSummary(figsize=(6, 6), plot_dir=PLOT_DIR)
+        model_summary = ModelSummary(figsize=(6, 6), plot_dir=self._plot_dir)
         model_summary.create(
             y_train=self._y_train,
             y_train_pred=self._y_train_predictions,
@@ -167,7 +170,7 @@ class ChurnPrediction():
     def _create_eda_plots(self):
         logging.info("Creating EDA plots...")
         logging.info("Creating histogram of churn column...")
-        histogram = Histogram(figsize=(20, 10), plot_dir=PLOT_DIR)
+        histogram = Histogram(figsize=(20, 10), plot_dir=self._plot_dir)
         histogram.create(
             self._df['Churn'],
             plot_file_name=self._plot_file_name_template.format(
@@ -181,7 +184,7 @@ class ChurnPrediction():
         logging.info("Creating histogram of churn column done")
 
         logging.info("Creating barplot of marital_status column...")
-        barplot = Barplot(figsize=(20, 10), plot_dir=PLOT_DIR)
+        barplot = Barplot(figsize=(20, 10), plot_dir=self._plot_dir)
         barplot.create(
             self._df.Marital_Status.value_counts('normalize'),
             plot_file_name=self._plot_file_name_template.format(
@@ -190,7 +193,7 @@ class ChurnPrediction():
         logging.info("Creating barplot of marital_status column done.")
 
         logging.info("Creating distplot of Total_Trans_Ct column...")
-        distplot = Distplot(figsize=(20, 10), plot_dir=PLOT_DIR)
+        distplot = Distplot(figsize=(20, 10), plot_dir=self._plot_dir)
         distplot.create(
             self._df['Total_Trans_Ct'],
             plot_file_name=self._plot_file_name_template.format(
@@ -201,7 +204,7 @@ class ChurnPrediction():
         logging.info("Creating heatmap of of correlated columns...")
         heatmap = Heatmap(
             figsize=(20, 10),
-            plot_dir=PLOT_DIR
+            plot_dir=self._plot_dir
             # annot=False,
             # cmap='Dark2_r',
             # linewidths=2
@@ -233,7 +236,8 @@ class ChurnPredictionFactory:
         for classifier in self.registered_classifiers:
             logging.info("Running classifier {} ...".format(str(classifier)))
             churn_prediction = ChurnPrediction(
-                model_dir=MODEL_DIR,
+                model_dir=Directory(MODEL_DIR).directory,
+                plot_dir=Directory(PLOT_DIR).directory,
                 classifier=classifier
             )
             churn_prediction.run()
