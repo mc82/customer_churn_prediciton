@@ -91,7 +91,7 @@ class ChurnPrediction():
     def _load_data_frame(self):
         logging.info("Loading data from {}".format(INPUT_DATA_PATH))
         self._df = pd.read_csv(INPUT_DATA_PATH)
-        self._df = self._df.sample(frac=0.1)  # TODO remove sampling
+        # self._df = self._df.sample(frac=0.1)  # TODO remove sampling
         logging.info("Loading of data has been finished.")
 
     def _print_data_overview(self):
