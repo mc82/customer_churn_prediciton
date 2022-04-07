@@ -6,7 +6,7 @@ from pandas import DataFrame
 import pytest
 
 NUMBER_OF_TEST_SAMPLES = 100
-BANK_DATA_PATH = "/Users/mgoetze/repos/customer_churn_prediction/test/artifacts/bank_data.csv"
+BANK_DATA_PATH = "test/artifacts/bank_data.csv"
 
 
 @pytest.fixture
