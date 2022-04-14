@@ -1,4 +1,4 @@
-.PHONY: setup-environment run lint autopep test
+.PHONY: setup-environment run lint autopep test show_zip
 
 setup-environment:
 	pip3 install --upgrade pip
@@ -19,3 +19,13 @@ lint:
 
 autopep:
 	find ./src ./test -type f -name "*.py" | xargs autopep8 --in-place --aggressive --aggressive 
+
+create_zip:
+	zip -X -x 'env/*' -x 'tmp/*' -x 'mypy_cache/*'-x '*.mypy_cache*' -x '-x 'churn_prediction.zip'.git/*' -r churn_prediction.zip .
+
+# show_zip:
+# 	rm -rf tmp 
+# 	mkdir tmp 
+# 	cp churn_prediction.zip tmp/ \
+# 	cd tmp/ \
+# 	# unzip churn_prediction.zip
