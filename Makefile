@@ -21,7 +21,7 @@ autopep:
 	find ./src ./test -type f -name "*.py" | xargs autopep8 --in-place --aggressive --aggressive 
 
 create_zip:
-	zip -X -x 'env/*' -x 'tmp/*' -x 'mypy_cache/*'-x '*.mypy_cache*' -x 'churn_prediction.zip' -x '.git/*' -r churn_prediction.zip .
+	zip -X -x '.vscode*' -x '*__pycache__*' -x 'env/*' -x 'tmp/*' -x 'mypy_cache/*'-x '*.mypy_cache*' -x 'churn_prediction.zip' -x '.git/*' -r churn_prediction.zip .
 
 # show_zip:
 # 	rm -rf tmp 
