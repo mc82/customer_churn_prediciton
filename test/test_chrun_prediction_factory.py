@@ -2,7 +2,7 @@
 __author__ = "Maik Goetze"
 """
 import pytest
-from churn_prediction import ChurnPredictionFactory
+from churn_library import ChurnPredictionFactory
 from classifier import RandomForest, LogisticRegression
 
 

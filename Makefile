@@ -9,11 +9,11 @@ setup-environment:
 	deactivate 
 
 run:
-	python3 -m src.main
+	python3 -m src.churn_library
 
 test:
-	pytest --report-log=output/test.log
-
+	python3 -m src.churn_script_logging_and_tests
+	
 lint:
 	find ./src ./test -type f -name "*.py" | xargs pylint
 
