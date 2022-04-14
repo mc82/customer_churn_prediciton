@@ -13,7 +13,7 @@ run:
 
 test:
 	python3 -m src.churn_script_logging_and_tests
-	
+
 lint:
 	find ./src ./test -type f -name "*.py" | xargs pylint
 
@@ -21,7 +21,7 @@ autopep:
 	find ./src ./test -type f -name "*.py" | xargs autopep8 --in-place --aggressive --aggressive 
 
 create_zip:
-	zip -X -x 'env/*' -x 'tmp/*' -x 'mypy_cache/*'-x '*.mypy_cache*' -x '-x 'churn_prediction.zip'.git/*' -r churn_prediction.zip .
+	zip -X -x 'env/*' -x 'tmp/*' -x 'mypy_cache/*'-x '*.mypy_cache*' -x 'churn_prediction.zip' -x '.git/*' -r churn_prediction.zip .
 
 # show_zip:
 # 	rm -rf tmp 
