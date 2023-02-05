@@ -1,5 +1,5 @@
 .vscode
-output/**
+
 tmp/.gitignore
 tmp/.python-version
 tmp/churn_prediction.zip

@@ -1,0 +1,21 @@
+churn_prediction_logger - INFO - Testing {__name__}
+churn_prediction_logger - INFO - Testing test_fit_logistic_regression: SUCCESS
+churn_prediction_logger - INFO - Testing test_fit_logistic_regression: SUCCESS
+churn_prediction_logger - INFO - Testing test_load_logistic_regression: SUCCESS
+churn_prediction_logger - INFO - Testing test_save_logistic_regression: SUCCESS
+churn_prediction_logger - INFO - Testing test_predict_logistic_regression: SUCCESS
+churn_prediction_logger - INFO - Testing test_fit_and_save_random_forest: SUCCESS
+churn_prediction_logger - INFO - Testing test_predict_random_forest: SUCCESS
+churn_prediction_logger - INFO - Testing test_create_bar_plot: SUCCESS
+churn_prediction_logger - INFO - Testing test_create_dist_plot: SUCCESS
+churn_prediction_logger - INFO - Testing test_create_feature_importance_plot: SUCCESS
+churn_prediction_logger - INFO - Testing test_create_heatmap: SUCCESS
+churn_prediction_logger - INFO - Testing test_create_hist: SUCCESS
+churn_prediction_logger - INFO - Testing test_create_model_summary_plot: SUCCESS
+churn_prediction_logger - INFO - Testing test_create_roc_curve: SUCCESS
+churn_prediction_logger - INFO - Testing test_create_shap_plot: SUCCESS
+churn_prediction_logger - INFO - Testing test_register_one_classifier: SUCCESS
+churn_prediction_logger - INFO - Testing test_register_one_classifier: SUCCESS
+churn_prediction_logger - INFO - Testing test_register_both_classifiers: SUCCESS
+churn_prediction_logger - INFO - Testing test_path_exists: SUCCESS
+churn_prediction_logger - INFO - Testing test_path_not_exists: SUCCESS

@@ -12,7 +12,7 @@ run:
 	python3 -m src.churn_library
 
 test:
-	pytest src/churn_script_logging_and_tests.py
+	pytest src/churn_script_logging_and_tests.py --report-log=test_log.json
 
 lint:
 	find ./src ./test -type f -name "*.py" | xargs pylint

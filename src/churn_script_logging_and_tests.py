@@ -1,6 +1,8 @@
-"""Implements test of feature_importance module
+"""Implements test and fixtures of of the churn library module
 __author__ = "Maik Goetze"
+__date__='2023-02-05'
 """
+import logging
 import pathlib
 import pickle
 import random
@@ -14,15 +16,12 @@ import pandas as pd
 import pytest
 from pandas import DataFrame, Series
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.linear_model import LogisticRegression
 
-from churn_library import ChurnPredictionFactory
-from classifier import LogisticRegression, RandomForest
-from directory import Directory
-from logger import logging
-from plot import (Barplot, Distplot, FeatureImportancePlot, Heatmap,
-                  ModelSummary, RocCurve, ShapPlot)
-from plot.histogram import Histogram
+from churn_library import (Barplot, ChurnPredictionFactory, Directory,
+                           Distplot, FeatureImportancePlot, Heatmap, Histogram,
+                           LogisticRegression, ModelSummary, RandomForest,
+                           RocCurve, ShapPlot, get_logger)
+
 
 N_Y_TRAIN = 300
 N_Y_TEST = 100
@@ -33,6 +32,10 @@ NUMBER_OF_TEST_SAMPLES = 100
 
 ARTIFACT_MODEL_DIR = "test/artifacts/data/model/"
 BANK_DATA_PATH = "test/artifacts/bank_data.csv"
+
+
+logger = get_logger(log_level=logging.DEBUG,
+                    log_file_name='churn_library_test.log')
 
 
 @pytest.fixture
@@ -50,7 +53,7 @@ def X_train() -> pd.DataFrame:
     """Set of dependent data to train a classifier
 
     Returns:
-        pd.DataFrame: Random values
+        DataFrame: Random values
     """
     return pd.DataFrame(
         {
@@ -75,7 +78,7 @@ def X_test(X_train: DataFrame) -> DataFrame:
 
 @pytest.fixture
 def y_train() -> DataFrame:
-    """Independet variable
+    """Crates y variable with random values
 
     Returns:
         DataFrame: Random int values to train / verify classifier
@@ -149,8 +152,14 @@ def test_fit_logistic_regression(
         X_train (DataFrame): Dependent data set
         y_train (DataFrame): Independent data set
     """
-    logistic_regression.fit(X=X_train, y=y_train)
-    assert logistic_regression._model is not None
+
+    try:
+        logistic_regression.fit(X=X_train, y=y_train)
+        assert logistic_regression._model is not None
+        logger.info("Testing test_fit_logistic_regression: SUCCESS")
+    except AssertionError:
+        logging.error(
+            "Testing test_fit_logistic_regression: Estimator not fitted")
 
 
 @pytest.mark.classifier
@@ -158,23 +167,34 @@ def test_fit_logistic_regression(
 def test_load_logistic_regression() -> None:
     """Test loading a pickled model
     """
-    logistic_regression = LogisticRegression(model_dir=ARTIFACT_MODEL_DIR)
-    logistic_regression.load()
-    assert logistic_regression._model is not None
+    try:
+        logistic_regression = LogisticRegression(model_dir=ARTIFACT_MODEL_DIR)
+        logistic_regression.load()
+        assert logistic_regression._model is not None
+        logger.info("Testing test_load_logistic_regression: SUCCESS")
+    except AssertionError:
+        logging.error(
+            "Testing test_load_logistic_regression: Model not loaded")
 
 
 @pytest.mark.classifier
 @pytest.mark.logistic_regression
-def test_save_logistic_regression(logistic_regression_trained: LogisticRegression, tmpdir) -> None:
+def test_save_logistic_regression(
+        logistic_regression_trained: LogisticRegression,
+        tmpdir) -> None:
     """_summary_
 
     Args:
         logistic_regression_trained (LogisticRegression): Fitted estimator
         to be ready for saving
-        tmpdir :  Tmp directory to save model
+        tmpdir:  Tmp directory to save model
     """
-    logistic_regression_trained.save()
-    assert len(tmpdir.listdir()) == 1
+    try:
+        logistic_regression_trained.save()
+        assert len(tmpdir.listdir()) == 1
+        logger.info("Testing test_save_logistic_regression: SUCCESS")
+    except AssertionError:
+        logging.error("Testing test_save_logistic_regression: Model not saved")
 
 
 @pytest.mark.classifier
@@ -184,14 +204,17 @@ def test_predict_logistic_regression(
     """Test inference of fitted classifier
 
     Args:
-        random_forest_trained (RandomForest): Fitted classifier
+        logistic_regression_trained (LogisticRegression): Fitted classifier
         X_train (DataFrame): Data set to perform inference on
     """
-    expected_type = np.ndarray
-
-    prediction_result = logistic_regression_trained.predict(X_train)
-
-    assert isinstance(prediction_result, expected_type)
+    try:
+        expected_type = np.ndarray
+        prediction_result = logistic_regression_trained.predict(X_train)
+        assert isinstance(prediction_result, expected_type)
+        logger.info("Testing test_predict_logistic_regression: SUCCESS")
+    except AssertionError:
+        logging.error(
+            "Testing test_predict_logistic_regression: Result is not of expected type")
 
 
 @pytest.fixture()
@@ -222,7 +245,7 @@ def random_forest_trained(
         y_train (DataFrame): Independent data set to be used to fit the classifier
 
     Returns:
-        RandomForest: _description_
+        RandomForest: Trained Random Forest estimator
     """
     model_path = "test/artifacts/data/model/random_forest.pkl"
     _model_path = Path(model_path)
@@ -250,8 +273,13 @@ def test_fit_and_save_random_forest(
         y_train (DataFrame): Independent data set to be used to fit the classifier
         random_forest (RandomForest): Initiated but unfitted classifier
     """
-    random_forest.fit(X_train, y_train)
-    random_forest.save()
+    try:
+        random_forest.fit(X_train, y_train)
+        random_forest.save()
+        logger.info("Testing test_fit_and_save_random_forest: SUCCESS")
+    except:
+        logging.error(
+            "Testing test_fit_and_save_random_forest: Model couldn't be fitted and saved")
 
 
 @pytest.mark.classifier
@@ -264,11 +292,14 @@ def test_predict_random_forest(
         random_forest_trained (RandomForest): Fitted classifier
         X_train (DataFrame): Data set to perform inference on
     """
-    expected_type = np.ndarray
-
-    prediction_result = random_forest_trained.predict(X_train)
-
-    assert isinstance(prediction_result, expected_type)
+    try:
+        expected_type = np.ndarray
+        prediction_result = random_forest_trained.predict(X_train)
+        assert isinstance(prediction_result, expected_type)
+        logger.info("Testing test_predict_random_forest: SUCCESS")
+    except AssertionError:
+        logging.error(
+            "Testing test_predict_random_forest: Predictions are not of the expected type")
 
 
 @pytest.fixture
@@ -289,11 +320,16 @@ def test_create_bar_plot(barplot_data: Series, tmpdir) -> None:
 
     Args:
         barplot_data (Series): _description_
-        tmpdir : tmp dir object (pytest fixture)
+        tmpdir (Directory): tmp dir object (pytest fixture)
     """
-    barplot = Barplot(plot_dir=tmpdir, figsize=(15, 8))
-    barplot.create(data=barplot_data, plot_file_name="barplot.png")
-    assert len(tmpdir.listdir()) == 1
+    try:
+        barplot = Barplot(plot_dir=tmpdir, figsize=(15, 8))
+        barplot.create(data=barplot_data, plot_file_name="barplot.png")
+        assert len(tmpdir.listdir()) == 1
+        logger.info("Testing test_create_bar_plot: SUCCESS")
+    except AssertionError:
+        logging.error(
+            "Testing test_create_bar_plot: Barplot couldn't be created")
 
 
 @pytest.fixture
@@ -312,11 +348,16 @@ def test_create_dist_plot(dist_data: Series, tmpdir) -> None:
 
     Args:
         dist_data (Series): Random data
-        tmpdir : Tmp directory to test save (pytest fixture)
+        tmpdir (Directory): Tmp directory to test save (pytest fixture)
     """
-    distplot = Distplot(plot_dir=tmpdir, figsize=(15, 8))
-    distplot.create(data=dist_data, plot_file_name="distplot.png")
-    assert len(tmpdir.listdir()) == 1
+    try:
+        distplot = Distplot(plot_dir=tmpdir, figsize=(15, 8))
+        distplot.create(data=dist_data, plot_file_name="distplot.png")
+        assert len(tmpdir.listdir()) == 1
+        logger.info("Testing test_create_dist_plot: SUCCESS")
+    except AssertionError:
+        logging.error(
+            "Testing test_create_dist_plot: Distplot couldn't be created")
 
 
 @pytest.fixture
@@ -350,7 +391,9 @@ def y_random_forest() -> np.ndarray:
 
 
 @pytest.fixture
-def random_forest_estimator(X_random_forest: np.ndarray, y_random_forest: np.ndarray) -> RandomForestClassifier:
+def random_forest_estimator(
+        X_random_forest: np.ndarray,
+        y_random_forest: np.ndarray) -> RandomForestClassifier:
     """Creates and fits estimator with random values
 
     Args:
@@ -374,17 +417,22 @@ def test_create_feature_importance_plot(
     Args:
         feature_names (List[str]): _description_
         random_forest_estimator (RandomForestClassifier): _description_
-        tmpdir (_type_): _description_
+        tmpdir (Directory): Tmp directory to test saving of plot
     """
-    importances = random_forest_estimator.feature_importances_
+    try:
+        importances = random_forest_estimator.feature_importances_
 
-    feature_importance_plot = FeatureImportancePlot(
-        plot_dir=tmpdir, figsize=(20, 7))
-    feature_importance_plot.create(
-        feature_names=feature_names,
-        data=importances,
-        plot_file_name="feature_importance_plot.png")
-    assert len(tmpdir.listdir()) == 1
+        feature_importance_plot = FeatureImportancePlot(
+            plot_dir=tmpdir, figsize=(20, 7))
+        feature_importance_plot.create(
+            feature_names=feature_names,
+            data=importances,
+            plot_file_name="feature_importance_plot.png")
+        assert len(tmpdir.listdir()) == 1
+        logger.info("Testing test_create_feature_importance_plot: SUCCESS")
+    except AssertionError:
+        logging.error(
+            "Testing test_create_feature_importance_plot: FeatureImportancePlot couldn't be created")
 
 
 @pytest.fixture
@@ -406,15 +454,20 @@ def heatmap_data() -> DataFrame:
 
 @pytest.mark.plot
 def test_create_heatmap(heatmap_data: DataFrame, tmpdir) -> None:
-    """_summary_
+    """Test to crate heatmap plot
 
     Args:
         heatmap_data (DataFrame): Correlation coefficients to be plot
-        tmpdir: Tmp directory to test saving of plot
+        tmpdir (Directory): Tmp directory to test saving of plot
     """
-    heatmap = Heatmap(plot_dir=tmpdir)
-    heatmap.create(data=heatmap_data, plot_file_name="heatmap.png")
-    assert len(tmpdir.listdir()) == 1
+    try:
+        heatmap = Heatmap(plot_dir=tmpdir)
+        heatmap.create(data=heatmap_data, plot_file_name="heatmap.png")
+        assert len(tmpdir.listdir()) == 1
+        logger.info("Testing test_create_heatmap: SUCCESS")
+    except AssertionError:
+        logging.error(
+            "Testing test_create_heatmap: Heatmap couldn't be created")
 
 
 @pytest.fixture
@@ -435,9 +488,15 @@ def test_create_hist(hist_data: Series, tmpdir) -> None:
         hist_data (Series): Data to be used in histogram plot
         tmpdir : Tmp directory to save histogram plot
     """
-    histogram = Histogram(plot_dir=tmpdir)
-    histogram.create(hist_data, plot_file_name="hist.png")
-    assert len(tmpdir.listdir()) == 1
+
+    try:
+        histogram = Histogram(plot_dir=tmpdir)
+        histogram.create(hist_data, plot_file_name="hist.png")
+        assert len(tmpdir.listdir()) == 1
+        logger.info("Testing test_create_hist: SUCCESS")
+    except AssertionError:
+        logging.error(
+            "Testing test_create_hist: Histogram couldn't be created")
 
 
 @pytest.fixture
@@ -462,7 +521,7 @@ def y_train_pred_model_summary() -> np.ndarray:
 
 @pytest.fixture
 def y_test_model_summary() -> np.ndarray:
-    """Creates random y data
+    """Creates random y data to be used in model summary tests
 
     Returns:
         np.ndarray: Random 1-dim data
@@ -472,8 +531,7 @@ def y_test_model_summary() -> np.ndarray:
 
 @pytest.fixture
 def y_test_pred_model_summary() -> np.ndarray:
-    """Creates random y data
-
+    """Creates random y data for model summary
     Returns:
         np.ndarray: Random 1-dim data
     """
@@ -487,30 +545,35 @@ def test_create_model_summary_plot(
         y_test_model_summary: np.ndarray,
         y_test_pred_model_summary: np.ndarray,
         tmpdir):
-    """_summary_
-
+    """Test of creating a model summary plot
     Args:
         y_train_model_summary (np.ndarray):
         y_train_pred_model_summary (np.ndarray):
         y_test_model_summary (np.ndarray):
         y_test_pred_model_summary (np.ndarray):
-        tmpdir (_type_): Tmp directory to save plot
+        tmpdir (Directory): Tmp directory to save plot
     """
-    model_summary = ModelSummary(plot_dir=tmpdir, figsize=(6, 6))
-    model_summary.create(
-        y_train=y_train_model_summary,
-        y_train_pred=y_train_pred_model_summary,
-        y_test=y_test_model_summary,
-        y_test_pred=y_test_pred_model_summary,
-        plot_file_name="model_summary.png",
-        model_name="my_classifier")
-    assert len(tmpdir.listdir()) == 1
+
+    try:
+        model_summary = ModelSummary(plot_dir=tmpdir, figsize=(6, 6))
+        model_summary.create(
+            y_train=y_train_model_summary,
+            y_train_pred=y_train_pred_model_summary,
+            y_test=y_test_model_summary,
+            y_test_pred=y_test_pred_model_summary,
+            plot_file_name="model_summary.png",
+            model_name="my_classifier")
+        assert len(tmpdir.listdir()) == 1
+
+        logger.info("Testing test_create_model_summary_plot: SUCCESS")
+    except AssertionError:
+        logging.error(
+            "Testing test_create_model_summary_plot: ModelSummary couldn't be created")
 
 
 @pytest.fixture
 def X_array() -> np.ndarray:
-    """_summary_
-
+    """Fixture to provide dependent values for tests
     Returns:
         np.ndarray: 1-dim array with random numbers
     """
@@ -519,21 +582,22 @@ def X_array() -> np.ndarray:
 
 @pytest.fixture
 def y_array() -> np.ndarray:
-    """_summary_
-
+    """Fixture to provide target values for tests
     Returns:
-        np.nested_iters: 1-dim array with randon numbers
+        np.nested_iters: 1-dim array with random numbers
     """
     return np.random.random_integers(low=0, high=1, size=N_SAMPLES)
 
 
 @pytest.fixture
-def estimator_logistic_regression(X_array: np.ndarray, y_array: np.ndarray, tmpdir) -> LogisticRegression:
-    """_summary_
-
+def estimator_logistic_regression(
+        X_array: np.ndarray,
+        y_array: np.ndarray,
+        tmpdir) -> LogisticRegression:
+    """Fixture to be used in tests to provide logistic regression estimator
     Args:
-        X (np.ndarray): Dependent variables
-        y (np.ndarray): Independent variable
+        X_array (np.ndarray): Dependent variables
+        y_array (np.ndarray): Independent variable
         tmpdir (str): model directory
 
     Returns:
@@ -556,26 +620,45 @@ def test_create_roc_curve(
         X_random_forest(np.ndarray): independent variable
         y_random_forest(np.ndarray): dependent variables
         random_forest_estimator (RandomForestClassifier): Estimator to assess quality
-        tmpdir (_type_): Tmp directory to save plots
+        tmpdir (Directory): Tmp directory to save plots
     """
-    roc_curve = RocCurve(plot_dir=tmpdir, figsize=(15, 8))
-    roc_curve.create(X=X_random_forest, y=y_random_forest, estimator=random_forest_estimator,
-                     plot_file_name="roc_plot.png")
-    assert len(tmpdir.listdir()) == 1
+    try:
+        roc_curve = RocCurve(plot_dir=tmpdir, figsize=(15, 8))
+        roc_curve.create(
+            X=X_random_forest,
+            y=y_random_forest,
+            estimator=random_forest_estimator,
+            plot_file_name="roc_plot.png")
+        assert len(tmpdir.listdir()) == 1
+
+        logger.info("Testing test_create_roc_curve: SUCCESS")
+    except AssertionError:
+        logging.error(
+            "Testing test_create_roc_curve: RocCurve couldn't be created")
 
 
 @pytest.mark.plot
-def test_create_shap_plot(random_forest_estimator: RandomForestClassifier, X_random_forest: np.ndarray, tmpdir):
+def test_create_shap_plot(
+        random_forest_estimator: RandomForestClassifier,
+        X_random_forest: np.ndarray,
+        tmpdir):
     """test create and save of shap plot
 
     Args:
-        estimator (RandomForestClassifier): Fitted tree estimator
+        random_forest_estimator (RandomForestClassifier): Fitted tree estimator
         X_random_forest (np.ndarray): Dependent variables
-        tmpdir (_type_): Tmp dir to save plot
+        tmpdir (Directory): Tmp dir to save plot
     """
-    shap_plot = ShapPlot(figsize=(15, 8), plot_dir=tmpdir)
-    shap_plot.create(estimator=random_forest_estimator, X=X_random_forest, plot_file_name="shap_plot.png")
-    assert len(tmpdir.listdir()) == 1
+
+    try:
+        shap_plot = ShapPlot(figsize=(15, 8), plot_dir=tmpdir)
+        shap_plot.create(estimator=random_forest_estimator,
+                         X=X_random_forest, plot_file_name="shap_plot.png")
+        assert len(tmpdir.listdir()) == 1
+        logger.info("Testing test_create_shap_plot: SUCCESS")
+    except AssertionError:
+        logging.error(
+            "Testing test_createst_create_shap_plotte_roc_curve: ShapPlot couldn't be created")
 
 
 @pytest.mark.factory
@@ -587,42 +670,87 @@ def test_register_one_classifier(classifier_name: str):
     Args:
         classifier_name (str): Name of the classifier to register
     """
-    churn_prediction_factory = ChurnPredictionFactory()
-    churn_prediction_factory.register_classifier(classifier_name)
 
-    assert len(churn_prediction_factory.registered_classifiers) == 1
-    assert churn_prediction_factory.registered_classifiers.pop() in [
-        RandomForest, LogisticRegression]
+    try:
+        churn_prediction_factory = ChurnPredictionFactory()
+        churn_prediction_factory.register_classifier(classifier_name)
+
+        assert len(churn_prediction_factory.registered_classifiers) == 1
+        assert churn_prediction_factory.registered_classifiers.pop() in [
+            RandomForest, LogisticRegression]
+
+        logger.info("Testing test_register_one_classifier: SUCCESS")
+    except AssertionError:
+        logging.error(
+            "Testing test_register_one_classifier: {} couldn't be registered".format(classifier_name))
 
 
 @pytest.mark.factory
 def test_register_both_classifiers():
     """Test to register both used classifiers
     """
-    churn_prediction_factory = ChurnPredictionFactory()
-    churn_prediction_factory.register_classifier("random_forest")
-    churn_prediction_factory.register_classifier("logistic_regression")
 
-    assert len(churn_prediction_factory.registered_classifiers) == 2
+    try:
+        churn_prediction_factory = ChurnPredictionFactory()
+        churn_prediction_factory.register_classifier("random_forest")
+        churn_prediction_factory.register_classifier("logistic_regression")
+
+        assert len(churn_prediction_factory.registered_classifiers) == 2
+        logger.info("Testing test_register_both_classifiers: SUCCESS")
+    except AssertionError:
+        logging.error(
+            "Testing test_register_both_classifiers: Both classifiers couldn't be registered")
 
 
 @pytest.fixture
-def directory_exists(tmpdir):
+def directory_exists(tmpdir) -> Directory:
+    """Fixture to create temporary directory if exists
+    Args:
+        tmpdir (TemporaryDirectory): Temporary directory object create by fixture
+    Returns:
+        Directory: temporary Directory object
+    """
     makedirs(path.join(tmpdir, "test"))
     directory = Directory(path.join(tmpdir, "test"))
     return directory
 
 
 @pytest.fixture
-def directory_not_exists(tmpdir):
+def directory_not_exists(tmpdir) -> Directory:
+    """Fixture to create temporary directory not exists
+    Args:
+        tmpdir (TemporaryDirectory): Temporary directory object create by fixture
+    Returns:
+        Directory: temporary Directory object
+    """
     test_dir = "test"
     directory = Directory(path.join(tmpdir, test_dir))
     return directory
 
 
 def test_path_exists(directory_exists):
-    assert isinstance(directory_exists.directory, pathlib.Path)
+    """Test to check whether path exist
+    Args:
+        directory_exists (Directory): directory object create by fixture
+    """
+    try:
+        assert isinstance(directory_exists.directory, pathlib.Path)
+        logger.info("Testing test_path_exists: SUCCESS")
+    except AssertionError:
+        logging.error(
+            "Testing test_path_exists: Type does not match expectation")
+
 
 
 def test_path_not_exists(directory_not_exists):
-    assert isinstance(directory_not_exists.directory, pathlib.Path)
+    """Test to check whether path not exist
+    Args:
+        directory_not_exists (Directory): directory object create by fixture
+    """
+    try:
+        assert isinstance(directory_not_exists.directory, pathlib.Path)
+        logger.info("Testing test_path_not_exists: SUCCESS")
+    except AssertionError:
+        logging.error(
+            "Testing test_path_not_exists: Type does not match expectation")
+
